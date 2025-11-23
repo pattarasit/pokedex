@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Pokedex, Pokemon, Dashboard } from './page';
+import { Pokedex,  Dashboard } from './page';
 import { Navigate } from 'react-router';
 
 export interface RouteConfig {
@@ -19,10 +19,6 @@ export const routes: RouteConfig[] = [
   {
     path: '/pokedex',
     element: <Pokedex />,
-  },
-  {
-    path: '/pokemon/:id',
-    element: <Pokemon />,
-  },
+  }
 ];
 
