@@ -3,7 +3,7 @@ export type Pokemon = {
   url: string;
 };
 
-export   type DataPokemonList = {
+export type DataPokemonList = {
   name: string;
   id: number;
   type: string;

@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -8,24 +6,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { DataPokemonList } from '@/types/pokemon';
+import { DataPokemonList, Pokemon } from '@/types/pokemon';
 
 type ComparisonTableProps = {
   dataPokemon: DataPokemonList[];
-  onClick: (ur: string) => void;
+  onClick: (data: Pokemon) => void;
 };
 
 export const ComparisonTable = ({ dataPokemon, onClick }: ComparisonTableProps) => {
-
   return (
     <Table>
       <TableHeader>
@@ -40,7 +28,7 @@ export const ComparisonTable = ({ dataPokemon, onClick }: ComparisonTableProps) 
         {dataPokemon.map(item => (
           <TableRow
             key={item.id}
-            onClick={() => onClick(item.url)}
+            onClick={() => onClick(item)}
             className="hover:cursor-pointer hover:bg-gray-100"
           >
             <TableCell className="p-2">

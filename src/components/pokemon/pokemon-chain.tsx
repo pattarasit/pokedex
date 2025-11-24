@@ -1,0 +1,105 @@
+import { Card, CardContent } from '../ui/card';
+
+export type EvolutionTrigger = {
+  name: string;
+  url: string;
+};
+
+export type EvolutionDetail = {
+  base_form_id: number | null;
+  gender: number | null;
+  held_item: unknown;
+  item: unknown;
+  known_move: unknown;
+  known_move_type: unknown;
+  location: unknown;
+  min_affection: number | null;
+  min_beauty: number | null;
+  min_happiness: number | null;
+  min_level: number | null;
+  needs_overworld_rain: boolean;
+  party_species: unknown;
+  party_type: unknown;
+  region_id: number | null;
+  relative_physical_stats: number | null;
+  time_of_day: string;
+  trade_species: unknown;
+  trigger: EvolutionTrigger;
+  turn_upside_down: boolean;
+};
+
+export type PokemonSpecies = {
+  name: string;
+  url: string;
+};
+
+export type EvolutionChainTo = {
+  evolution_details: EvolutionDetail[];
+  evolves_to: EvolutionChainTo[];
+  is_baby: boolean;
+  species: PokemonSpecies;
+};
+
+export type EvolutionChain = {
+  baby_trigger_item: unknown;
+  id: number;
+  chain: EvolutionChainTo;
+};
+
+export const PokemonChain = ({ evolutionChain }: { evolutionChain: EvolutionChain }) => {
+  console.log('🚀 ~ PokemonChain ~ evolutionChain:', evolutionChain);
+  const flattenEvolutionChain = (
+    chain: EvolutionChain
+  ): Array<{ species: PokemonSpecies; details: EvolutionDetail | null }> => {
+    const result: Array<{ species: PokemonSpecies; details: EvolutionDetail | null }> = [
+      { species: chain.chain.species, details: null },
+    ];
+
+    if (chain.chain.evolves_to && chain.chain.evolves_to.length > 0) {
+      const nextEvolution = chain.chain.evolves_to[0];
+      const evolutionDetail = nextEvolution.evolution_details[0] || null;
+      result.push({
+        species: nextEvolution.species,
+        details: evolutionDetail,
+      });
+
+      if (nextEvolution.evolves_to && nextEvolution.evolves_to.length > 0) {
+        const finalEvolution = nextEvolution.evolves_to[0];
+        const finalDetail = finalEvolution.evolution_details[0] || null;
+        result.push({
+          species: finalEvolution.species,
+          details: finalDetail,
+        });
+      }
+    }
+
+    return result;
+  };
+
+  const evolutionStages = flattenEvolutionChain(evolutionChain as EvolutionChain);
+
+  return (
+    <Card>
+      <CardContent className="flex justify-center items-center p-6 gap-4">
+        {evolutionStages.map((stage, index) => (
+          <div key={stage?.species?.name} className="flex items-center gap-4">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full flex items-center justify-center border-2 border-gray-200">
+                <img
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${stage.species.url.split('/').slice(-2)[0]}.png`}
+                  alt={stage.species.name}
+                  className="w-20 h-20 object-contain"
+                />
+              </div>
+              <span className="capitalize font-semibold text-sm">{stage?.species?.name}</span>
+              {stage?.details?.min_level && (
+                <span className="text-xs text-gray-500">Lv. {stage?.details?.min_level}</span>
+              )}
+            </div>
+            {index < evolutionStages.length - 1 && <div className="text-2xl text-gray-400">→</div>}
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+};

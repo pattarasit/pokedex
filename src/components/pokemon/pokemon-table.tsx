@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { ComparisonTable } from '../comparison-table';
 import { PokemonPagination } from './pokemon-pagination';
-import { useGetAllPokemon } from '@/hook/use-get-pokemon';
+import { useGetAllPokemon, useGetPokemonByType, useGetPokemonType } from '@/hook/use-get-pokemon';
 import { useQueries } from '@tanstack/react-query';
 import { DataPokemonList, Pokemon } from '@/types/pokemon';
 import { Card, CardContent } from '../ui/card';
@@ -10,13 +10,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from '../ui/button';
 
 type PokemonTableProps = {
-  handleSelectPokemon: (url: string) => void;
+  handleSelectPokemon: (data: Pokemon) => void;
 };
 
 const PokemonTable = ({ handleSelectPokemon }: PokemonTableProps) => {
   const { data } = useGetAllPokemon();
+  const { data: pokemonType } = useGetPokemonType();
   const [search, setSearch] = React.useState('');
-  const [category, setCategory] = React.useState<string>('all');
+  const [type, setType] = React.useState<string>('all');
+  const { data: pokemonByType } = useGetPokemonByType(type);
+
+  const pokeData = useMemo(() => {
+    if (type === 'all') return data;
+    return pokemonByType;
+  }, [type, data, pokemonByType]);
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,15 +39,15 @@ const PokemonTable = ({ handleSelectPokemon }: PokemonTableProps) => {
   };
 
   const filteredData = useMemo(() => {
-    if (!data?.results) return [];
-    if (!search.trim()) return data.results;
+    if (!pokeData) return [];
+    if (!search.trim()) return pokeData;
 
     const searchLower = search.toLowerCase().trim();
-    return data.results.filter((pokemon: Pokemon) => {
+    return pokeData.filter((pokemon: Pokemon) => {
       const id = extractIdFromUrl(pokemon.url);
       return pokemon.name.toLowerCase().includes(searchLower) || id.includes(searchLower);
     });
-  }, [data, search]);
+  }, [pokeData, search]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -73,13 +80,16 @@ const PokemonTable = ({ handleSelectPokemon }: PokemonTableProps) => {
     });
   }, [pokemonQueries]);
 
+  const handleSelectType = (type: string) => {
+    setType(type);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <Card className="w-full max-w-2xl mx-auto">
         <CardContent className="p-3">
           <h2 className="text-xl font-semibold mb-4">Pokemon</h2>
 
-          {/* Filters */}
           <div className="flex items-center gap-3 mb-4">
             <Input
               placeholder="Search pokemon..."
@@ -87,18 +97,19 @@ const PokemonTable = ({ handleSelectPokemon }: PokemonTableProps) => {
               onChange={e => setSearch(e.target.value)}
               className="max-w-xs"
             />
-            <Select value={category} onValueChange={setCategory}>
+            <Select value={type} onValueChange={handleSelectType}>
               <SelectTrigger className="w-[180px]">
                 <Button variant="default">
-                  <SelectValue placeholder="Filter by category" />
+                  <SelectValue placeholder="Filter by type" />
                 </Button>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All</SelectItem>
-                <SelectItem value="type">Type</SelectItem>
-                <SelectItem value="ability">Ability</SelectItem>
-                <SelectItem value="move">Move</SelectItem>
-                <SelectItem value="item">Item</SelectItem>
+                {pokemonType?.map((type: Pokemon) => (
+                  <SelectItem key={type.name} value={type.url}>
+                    {type.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
