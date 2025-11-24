@@ -5,7 +5,7 @@ import { routes } from './routes';
 function App() {
   return (
     <Routes>
-      {routes.map((route) => (
+      {routes.map(route => (
         <Route key={route.path} path={route.path} element={route.element} />
       ))}
     </Routes>

@@ -40,6 +40,7 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }: Pagina
         variant: isActive ? 'outline' : 'ghost',
         size,
       }),
+      'text-zinc-800!',
       className
     )}
     {...props}
