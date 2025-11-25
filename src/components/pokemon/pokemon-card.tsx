@@ -1,5 +1,5 @@
 import { Card, CardContent, CardTitle } from '../ui/card';
-import { PokemonDetail, PokemonStat, PokemonAbility } from '@/types/pokemon';
+import { PokemonDetail, PokemonStat, PokemonAbility, PokemonType } from '@/types/pokemon';
 
 type PokemonCardProps = {
   pokemon: PokemonDetail;
@@ -13,6 +13,7 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
         <CardTitle>
           (#{pokemon.id}) <span className="capitalize">{pokemon.name}</span>
         </CardTitle>
+        <span className="capitalize text-sm font-semibold text-zinc-500">{pokemon.types.map((t: PokemonType) => t.type.name).join(', ')}</span>
       </CardContent>
 
       <CardContent className="text-left">

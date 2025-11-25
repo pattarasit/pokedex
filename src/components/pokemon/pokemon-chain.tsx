@@ -49,10 +49,7 @@ export const PokemonChain = ({ evolutionChain }: PokemonChainType) => {
                   className="w-20 h-20 object-contain"
                 />
               </div>
-              <span className="capitalize font-semibold text-sm">{stage?.species?.name}</span>
-              {stage?.details?.min_level && (
-                <span className="text-xs text-gray-500">Lv. {stage?.details?.min_level}</span>
-              )}
+              <span className="capitalize font-semibold text-sm">{stage?.species?.name}</span> 
             </div>
             {index < evolutionStages.length - 1 && <div className="text-2xl text-gray-400">→</div>}
           </div>
