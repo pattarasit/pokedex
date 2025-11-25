@@ -42,7 +42,7 @@ export const PokemonChain = ({ evolutionChain }: PokemonChainType) => {
         {evolutionStages.map((stage, index) => (
           <div key={stage?.species?.name} className="flex items-center gap-4">
             <div className="flex flex-col items-center gap-2">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full flex items-center justify-center border-2 border-gray-200">
+              <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center border-2 border-gray-200">
                 <img
                   src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${stage.species.url.split('/').slice(-2)[0]}.png`}
                   alt={stage.species.name}
