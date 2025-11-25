@@ -4,12 +4,16 @@ import { PokemonCard } from '@/components/pokemon/pokemon-card';
 import PokemonTable from '@/components/pokemon/pokemon-table';
 import { Pokemon } from '@/types/pokemon';
 import { PokemonChain } from '@/components/pokemon/pokemon-chain';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const Pokedex = () => {
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | undefined>(undefined);
-  const { data: pokemon } = useGetPokemon(selectedPokemon?.url);
-  const { data: evolutionChain } = useGetEvolutionChain(selectedPokemon?.name);
+  const { data: pokemon, isLoading: isLoadingPokemon } = useGetPokemon(selectedPokemon?.url);
+  const { data: evolutionChain, isLoading: isLoadingEvolutionChain } = useGetEvolutionChain(
+    selectedPokemon?.name
+  );
 
+  const isLoading = isLoadingPokemon || isLoadingEvolutionChain;
   const handleSelectPokemon = (data: Pokemon) => {
     setSelectedPokemon(data);
   };
@@ -22,10 +26,16 @@ export const Pokedex = () => {
           <PokemonTable handleSelectPokemon={handleSelectPokemon} />
         </div>
 
-        <div className="col-span-5 sticky top-4 self-start flex flex-col gap-4">
-          {pokemon && <PokemonCard pokemon={pokemon} />}
-          {evolutionChain && <PokemonChain evolutionChain={evolutionChain} />}
-        </div>
+        {isLoading ? (
+          <div>
+            <Skeleton className="w-[440px] h-[420px]" />
+          </div>
+        ) : (
+          <div className="col-span-5 sticky top-4 self-start flex flex-col gap-4">
+            {pokemon && <PokemonCard pokemon={pokemon} />}
+            {evolutionChain && <PokemonChain evolutionChain={evolutionChain} />}
+          </div>
+        )}
       </div>
     </div>
   );

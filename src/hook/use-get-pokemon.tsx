@@ -1,5 +1,4 @@
-import { EvolutionChain } from '@/components/pokemon/pokemon-chain';
-import { Pokemon } from '@/types/pokemon';
+import { EvolutionChain, Pokemon } from '@/types/pokemon';
 import { useQuery } from '@tanstack/react-query';
 
 export const useGetAllPokemon = () => {
@@ -62,7 +61,7 @@ export const useGetPokemonByType = (url: string | undefined) => {
     enabled: !!url,
   });
 
-  const pokemonData = data?.pokemon.map((pokemon: any) => ({
+  const pokemonData = data?.pokemon.map((pokemon: { pokemon: Pokemon }) => ({
     name: pokemon?.pokemon.name,
     url: pokemon?.pokemon.url,
   }));

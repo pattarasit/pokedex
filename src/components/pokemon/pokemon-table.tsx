@@ -3,7 +3,7 @@ import { ComparisonTable } from '../comparison-table';
 import { PokemonPagination } from './pokemon-pagination';
 import { useGetAllPokemon, useGetPokemonByType, useGetPokemonType } from '@/hook/use-get-pokemon';
 import { useQueries } from '@tanstack/react-query';
-import { DataPokemonList, Pokemon } from '@/types/pokemon';
+import { DataPokemonList, Pokemon, PokemonDetail } from '@/types/pokemon';
 import { Card, CardContent } from '../ui/card';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -69,7 +69,7 @@ const PokemonTable = ({ handleSelectPokemon }: PokemonTableProps) => {
     if (!allLoaded) return [];
 
     return pokemonQueries.map(query => {
-      const pokemonData = query.data as any;
+      const pokemonData = query.data as PokemonDetail;
       return {
         id: pokemonData.id,
         name: pokemonData.name,

@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router';
 
 export const Dashboard = () => {
@@ -7,7 +8,7 @@ export const Dashboard = () => {
     <>
       <h1>Welcome to Pokedex</h1>
       <div className="card">
-        <button onClick={() => navigate('/pokedex')}>Show All Pokemon</button>
+        <Button onClick={() => navigate('/pokedex')}>Show All Pokemon</Button>
       </div>
     </>
   );

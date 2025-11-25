@@ -1,19 +1,11 @@
 import { Card, CardContent, CardTitle } from '../ui/card';
+import { PokemonDetail, PokemonStat, PokemonAbility } from '@/types/pokemon';
 
-type Stats = {
-  base_stat: number;
-  effort: number;
-  stat: { name: string; url: string };
-  name: string;
+type PokemonCardProps = {
+  pokemon: PokemonDetail;
 };
 
-type Abilities = {
-  ability: { name: string; url: string };
-  is_hidden: boolean;
-  slot: number;
-};
-
-export const PokemonCard = ({ pokemon }: { pokemon: any }) => {
+export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   return (
     <Card>
       <CardContent className="flex justify-center flex-col items-center p-4">
@@ -24,7 +16,7 @@ export const PokemonCard = ({ pokemon }: { pokemon: any }) => {
       </CardContent>
 
       <CardContent className="text-left">
-        {pokemon.stats.map((p: Stats) => (
+        {pokemon.stats.map((p: PokemonStat) => (
           <div key={p.stat.name} className="justify-between flex">
             <span className="font-semibold capitalize">{p.stat.name}:</span>
             <span>{p.base_stat}</span>
@@ -33,7 +25,7 @@ export const PokemonCard = ({ pokemon }: { pokemon: any }) => {
       </CardContent>
       <CardContent className="text-left">
         <p className="font-semibold">Abilities:</p>
-        {pokemon.abilities.map((a: Abilities) => (
+        {pokemon.abilities.map((a: PokemonAbility) => (
           <div key={a.ability.name} className="justify-between flex items-center gap-1">
             <span className="capitalize w-[100px] shrink-0">{a.ability.name}:</span>
             {Array.from({ length: a.slot }).map((_, index) => (

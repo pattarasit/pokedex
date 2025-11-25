@@ -1,53 +1,11 @@
+import { EvolutionChain, EvolutionDetail, PokemonSpecies } from '@/types/pokemon';
 import { Card, CardContent } from '../ui/card';
 
-export type EvolutionTrigger = {
-  name: string;
-  url: string;
+type PokemonChainType = {
+  evolutionChain: EvolutionChain;
 };
 
-export type EvolutionDetail = {
-  base_form_id: number | null;
-  gender: number | null;
-  held_item: unknown;
-  item: unknown;
-  known_move: unknown;
-  known_move_type: unknown;
-  location: unknown;
-  min_affection: number | null;
-  min_beauty: number | null;
-  min_happiness: number | null;
-  min_level: number | null;
-  needs_overworld_rain: boolean;
-  party_species: unknown;
-  party_type: unknown;
-  region_id: number | null;
-  relative_physical_stats: number | null;
-  time_of_day: string;
-  trade_species: unknown;
-  trigger: EvolutionTrigger;
-  turn_upside_down: boolean;
-};
-
-export type PokemonSpecies = {
-  name: string;
-  url: string;
-};
-
-export type EvolutionChainTo = {
-  evolution_details: EvolutionDetail[];
-  evolves_to: EvolutionChainTo[];
-  is_baby: boolean;
-  species: PokemonSpecies;
-};
-
-export type EvolutionChain = {
-  baby_trigger_item: unknown;
-  id: number;
-  chain: EvolutionChainTo;
-};
-
-export const PokemonChain = ({ evolutionChain }: { evolutionChain: EvolutionChain }) => {
-  console.log('🚀 ~ PokemonChain ~ evolutionChain:', evolutionChain);
+export const PokemonChain = ({ evolutionChain }: PokemonChainType) => {
   const flattenEvolutionChain = (
     chain: EvolutionChain
   ): Array<{ species: PokemonSpecies; details: EvolutionDetail | null }> => {
